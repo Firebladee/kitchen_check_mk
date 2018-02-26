@@ -1,0 +1,31 @@
+---
+classes:
+  - ntp
+  - check_mk
+  - hosts
+
+check_mk::omd_site: 'test'
+#puppet::puppetmaster: 'default-puppet-master'
+
+hosts::host_entries:
+  'default-puppet-master.vagrantup.com':
+    ip: '192.168.33.10'
+    host_aliases:
+      - 'puppet'
+      - 'default-puppet-master'
+  'default-check-mk-server.vagrantup.com':
+    ip: '192.168.33.20'
+    host_aliases:
+      - 'check_mk'
+  'default-client-centos-66.vargrantup.com':
+    ip: '192.168.33.30'
+    host_aliases:
+      - 'default-client-centos-66'
+  'default-client-ubuntu-12.vagrantip.com':
+    ip: '192.168.33.40'
+    host_aliases:
+      - 'default-client-ubuntu-12'
+  'default-client-ubuntu-14.vagrantip.com':
+    ip: '192.168.33.50'
+    host_aliases:
+      - 'default-client-ubuntu-14'

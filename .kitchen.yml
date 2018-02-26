@@ -1,0 +1,104 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: puppet_apply
+  manifests_path: manifests
+  modules_path: modules
+  hiera_data_path: hieradata
+  require_chef_for_busser: false
+#  puppet_version: '4.10.5'
+#  puppet_yum_collections_repo: 'https://yum.puppetlabs.com/puppetlabs-release-el-7.noarch.rpm'
+  require_puppet_collections: true
+#  hiera_config_path: hiera.yaml
+  custom_options: --hiera_config /tmp/kitchen/hiera.yaml
+
+platforms:
+  - name: puppet_master
+    driver:
+      box: puppetlabs/centos-7.2-64-nocm
+      network:
+        - ["private_network", {ip: "192.168.33.10"}]
+        - ["forwarded_port", {guest: 6556, host: 9001}]
+      customize:
+        memory: 2048
+  - name: check_mk_server
+    driver:
+      box: puppetlabs/centos-6.6-64-nocm
+      network:
+        - ["private_network", {ip: "192.168.33.20"}]
+        - ["forwarded_port", {guest: 80, host: 9000}]
+    #provisioner:
+    #  name: shell
+    provisioner:
+      custom_install_command: |
+        sudo sh -c "echo '192.168.33.10 default-puppet-master.vagrantup.com puppet' >> /etc/hosts"
+        #        sudo yum install puppet -y
+      puppet_apply_command: 'sudo -E /opt/puppetlabs/bin/puppet agent --test --waitforcert 30'
+      puppet_verbose: true
+      puppet_server: default-puppet-master.vagrantup.com
+  - name: server_ubuntu_12.04
+    driver:
+      box: ubuntu/precise64
+      network:
+        - ["private_network", {ip: "192.168.33.21"}]
+        - ["forwarded_port", {guest: 80, host: 9001}]
+    provisioner:
+      custom_install_command: |
+        sudo sh -c "echo '192.168.33.10 default-puppet-master.vagrantup.com puppet' >> /etc/hosts"
+      puppet_apply_command: 'sudo -E /opt/puppetlabs/bin/puppet agent --test --waitforcert 30'
+      puppet_verbose: true
+      puppet_server: default-puppet-master.vagrantup.com
+  - name: server_ubuntu_14.04
+    driver:
+      box: ubuntu/trusty64
+      network:
+        - ["private_network", {ip: "192.168.33.22"}]
+        - ["forwarded_port", {guest: 80, host: 9002}]
+    provisioner:
+      custom_install_command: |
+        sudo sh -c "echo '192.168.33.10 default-puppet-master.vagrantup.com puppet' >> /etc/hosts"
+      puppet_apply_command: 'sudo -E /opt/puppetlabs/bin/puppet agent --test --waitforcert 30'
+      puppet_verbose: true
+      puppet_server: default-puppet-master.vagrantup.com
+  - name: client_centos-66
+    driver:
+      box: puppetlabs/centos-6.6-64-nocm
+      network:
+        - ["private_network", {ip: "192.168.33.30"}]
+    provisioner:
+      custom_install_command: |
+        sudo sh -c "echo '192.168.33.10 default-puppet-master.vagrantup.com puppet' >> /etc/hosts"
+      puppet_apply_command: 'sudo -E /opt/puppetlabs/bin/puppet agent --test --waitforcert 30'
+      puppet_verbose: true
+      puppet_server: default-puppet-master.vagrantup.com
+  - name: client_ubuntu_12
+    driver:
+      box: ubuntu/precise64
+      network:
+        - ["private_network", {ip: "192.168.33.40"}]
+    provisioner:
+      custom_install_command: |
+        sudo sh -c "echo '192.168.33.10 default-puppet-master.vagrantup.com puppet' >> /etc/hosts"
+      puppet_apply_command: 'sudo -E /opt/puppetlabs/bin/puppet agent --test --waitforcert 30'
+      puppet_verbose: true
+      puppet_server: default-puppet-master.vagrantup.com
+  - name: client_ubuntu_14
+    driver:
+      box: ubuntu/trusty64
+      network:
+        - ["private_network", {ip: "192.168.33.50"}]
+    provisioner:
+      custom_install_command: |
+        sudo sh -c "echo '192.168.33.10 default-puppet-master.vagrantup.com puppet' >> /etc/hosts"
+      puppet_apply_command: 'sudo -E /opt/puppetlabs/bin/puppet agent --test --waitforcert 30'
+      puppet_verbose: true
+      puppet_server: default-puppet-master.vagrantup.com
+
+suites:
+  - name: default
+    manifests: site.pp
+
+verifier:
+  ruby_bindir: '/usr/bin'

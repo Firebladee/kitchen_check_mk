@@ -1,0 +1,17 @@
+---
+classes:
+  - puppet
+  - puppetdb
+
+puppet::server: true
+puppet::server_foreman: false
+puppet::server_reports: 'store,puppetdb'
+puppet::server_external_nodes: ''
+puppet::server_puppetdb_host: 'default-puppet-master.vagrantup.com'
+puppet::server_storeconfigs_backend: 'puppetdb'
+puppet::server_default_manifest: true
+puppet::server_default_manifest_path: '/tmp/kitchen/manifests'
+puppet::server_default_manifest_content: ''
+puppet::autosign: true
+puppet::server_common_modules_path: '/tmp/kitchen/modules'
+puppet::hiera_config: '/tmp/kitchen/hiera.global.yaml'

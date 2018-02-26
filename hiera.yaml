@@ -1,0 +1,20 @@
+---
+version: 5
+defaults:
+  datadir: hiera
+  data_hash: yaml_data
+
+hierarchy:
+  - name: "common"
+    path: "common.yaml"
+  - name: "hosts"
+    path: "hosts/%{::hostname}.yaml"
+
+#:backends:
+#  - yaml
+#:yaml:
+#  :datadir: /tmp/kitchen/hiera
+#:hierarchy:
+#  - hosts/%{::hostname}
+#  - common
+

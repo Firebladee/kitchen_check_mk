@@ -1,0 +1,18 @@
+---
+classes:
+  - check_mk
+  - puppet
+#  - omd
+#  - package
+#  - omd::add
+
+#omd::add::omd_site: 'test'
+check_mk::omd_site: 'test'
+check_mk::install: 'server'
+
+puppet::puppetmaster: 'puppet'
+
+#omd::repo: true
+
+package::package:
+  epel-release: {}

@@ -1,0 +1,5 @@
+bundle install
+kitchen converge puppet
+
+That will build a puppet master from scratch.
+Look at hieradata/hosts/default-puppet-master.yaml to see the two puppet modules and the variables used to create it. 
