@@ -1,7 +1,8 @@
 # A sample Gemfile
 source "https://rubygems.org"
 
-puppetversion = ENV.key?('PUPPET_VERSION') ? ENV['PUPPET_VERSION'] : ['>= 3.3']
+puppetversion = ENV.key?('PUPPET_VERSION') ? ENV['PUPPET_VERSION'].to_s : ['~>5.0']
+
 gem 'puppet', puppetversion
 gem "test-kitchen"
 gem "kitchen-puppet"
